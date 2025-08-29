@@ -105,11 +105,11 @@ Una vez instalado, puedes ejecutar la aplicación en diferentes modos:
 ├── src/
 │   ├── main.py                # Archivo principal (frontend con Flet)
 │   └── utils.py               # Clases y funciones de soporte
-├── assets/
-│   ├── captura.jpeg           # Captura del programa en funcionamiento
-│   └── icon.png               # Icono del proyecto
-├── scripts/
-│   └── newinputfunc.py        # Parser para expresiones matemáticas
+|   |── assets/
+│       ├── captura.jpeg           # Captura del programa en funcionamiento
+│       └── icon.png               # Icono del proyecto
+|   |── scripts/
+│       └── newinputfunc.py        # Parser para expresiones matemáticas
 ├── build/
 │   └── web/                   # Versión compilada para web
 ├── LICENSE                    # Licencia MIT
