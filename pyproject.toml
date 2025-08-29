@@ -1,0 +1,34 @@
+[project]
+name = "QuantumGraphcalc"
+version = "0.1.0"
+description = ""
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "flet==0.27.6",
+  "numpy"
+]
+
+[tool.flet.splash]
+web = false
+ios = false
+android = false
+
+[tool.flet.app]
+path = "src"
+
+[tool.uv]
+dev-dependencies = [
+    "flet[all]==0.28.2",
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+flet = {extras = ["all"], version = "0.28.2"}
+
+[tool.flet]
+compile.app = true
+compile.packages = true
+compile.cleanup = true
