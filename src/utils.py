@@ -2,8 +2,6 @@ import flet as ft
 from typing import List
 from scripts import newinputfunc as ev
 
-number_filter = ft.InputFilter([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "+-"])
-
 class Limit(ft.Row):
     def __init__(self, value: int, label: str, page: ft.Page = None):
         super().__init__()
@@ -11,6 +9,10 @@ class Limit(ft.Row):
         self.label: str = label
         self.value: int = value
         self.page: ft.Page = page
+        
+        def update(k: ft.ControlEvent):
+            self.value = int(k.control.value)
+            self.page.update()
         
         def add(k:ft.ControlEvent, num: int = 1):
             self.value += num
@@ -20,8 +22,9 @@ class Limit(ft.Row):
         input_field: ft.TextField = ft.TextField(
             width=64,
             value=self.value,
-            input_filter=number_filter,
+            input_filter=ft.InputFilter(allow=True, regex_string=r"^-?\d*$", replacement_string="0"),
             label=self.label,
+            on_submit=update,
         )
 
         add_1_button: ft.IconButton = ft.IconButton(
@@ -86,6 +89,8 @@ class Axis(ft.LineChart):
         self.page.update()
 
 def when_change_window(k: ft.ControlEvent, axis: Axis, distribution_1: ft.Stack, expression: ft.TextField, settings_button: ft.IconButton):
+    axis.height = axis.page.height - 3
+    axis.width = axis.page.width - 3
     axis.page.clean()
     if (axis.page.height < axis.page.width):
         axis.page.bottom_appbar = ft.BottomAppBar(

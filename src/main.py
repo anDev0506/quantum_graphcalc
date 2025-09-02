@@ -77,7 +77,6 @@ async def main(page: ft.Page):
     show_info_distribution_1: ft.Container = ft.Container(
         content=ft.Column([expression, ft.Row([limit_a, limit_b])], alignment=ft.MainAxisAlignment.CENTER, horizontal_alignment=ft.CrossAxisAlignment.CENTER),
         height=150,
-        width=page.width * 1/2,
         border_radius=8,
         alignment=ft.alignment.top_left,
         padding=2,
@@ -103,6 +102,9 @@ async def main(page: ft.Page):
     
     if (page.width) > 1000:
         show_info_distribution_1.width = page.width * 3/10
+    else:
+        show_info_distribution_1.width = page.width * 1/2
+    
     
     axis.height = page.height - 3
     axis.width = page.width - 3
