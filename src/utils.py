@@ -91,6 +91,10 @@ class Axis(ft.LineChart):
 def when_change_window(k: ft.ControlEvent, axis: Axis, distribution_1: ft.Stack, expression: ft.TextField, settings_button: ft.IconButton):
     axis.height = axis.page.height - 3
     axis.width = axis.page.width - 3
+    if (axis.width) > 1000:
+        distribution_1.controls[1].width = axis.width * 3/10
+    else:
+        distribution_1.controls[1].width = axis.width * 1/2
     axis.page.clean()
     if (axis.page.height < axis.page.width):
         axis.page.bottom_appbar = ft.BottomAppBar(

@@ -5,6 +5,7 @@ import asyncio
 
 async def main(page: ft.Page):
     sub_div: int = 25
+    page.theme_mode = ft.ThemeMode.DARK
     
     def change_theme(k):
         if page.theme_mode == ft.ThemeMode.DARK:
@@ -35,7 +36,7 @@ async def main(page: ft.Page):
     
     limit_a: Limit = Limit(value=-6, label="X\u2081", page=page)
     limit_b: Limit = Limit(value=6, label="X\u2082", page=page)
-    color_theme_button: ft.IconButton = ft.IconButton(on_click=change_theme)
+    color_theme_button: ft.IconButton = ft.IconButton(on_click=change_theme, icon=ft.Icons.LIGHT_MODE)
     settings_button: ft.IconButton = ft.IconButton(
         icon=ft.Icons.SETTINGS,
         on_click=lambda k: page.open(settings_screen)
@@ -57,14 +58,40 @@ async def main(page: ft.Page):
         icon=ft.Icons.REMOVE,
         on_click=lambda k: add(k, -1))
 
-    settings_screen: ft.AlertDialog = ft.AlertDialog(
-        title=ft.Text("Settings"),
+    interval_settings: ft.AlertDialog = ft.AlertDialog(
+        title=ft.Text("Interval"),
         content=ft.Column([
-            ft.Text("Down below you can change the interval of plotting by modifying X\u2081 and X\u2082", text_align=ft.TextAlign.CENTER),
-            ft.Row([limit_a, limit_b], alignment=ft.MainAxisAlignment.CENTER),
-            ft.Text("Down below you can change the subdivisiones per interval\nMore subdivisions, More Accuracy, Less Performance\nLess subdivisions, Less Accuracy, More Performance", text_align=ft.TextAlign.CENTER),
+            ft.Text("Here you can change the interval of plotting by modifying X\u2081 and X\u2082.", text_align=ft.TextAlign.CENTER),
+            ft.Row([limit_a, limit_b], alignment=ft.MainAxisAlignment.CENTER)
+        ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.SPACE_EVENLY),
+        actions=[ft.TextButton("Close", on_click=lambda k: page.close(interval_settings))]
+    )
+
+    open_interval_button: ft.ElevatedButton = ft.ElevatedButton(
+        text="Interval",
+        on_click=lambda k: page.open(interval_settings),
+    )
+
+    subdivs_settings: ft.AlertDialog = ft.AlertDialog(
+        title=ft.Text("Subdivisions"),
+        content=ft.Column([
+            ft.Text("Here you can change the subdivisions per interval\nBigger values implies better accuracy but less performance.", text_align=ft.TextAlign.CENTER),
             ft.Row([plus_1_sub, change_subdivs, minus_1_sub], alignment=ft.MainAxisAlignment.CENTER)
         ], horizontal_alignment=ft.CrossAxisAlignment.CENTER, alignment=ft.MainAxisAlignment.SPACE_EVENLY),
+        actions=[ft.TextButton("Close", on_click=lambda k: page.close(subdivs_settings))]
+    )
+
+    open_subdivs_button: ft.ElevatedButton = ft.ElevatedButton(
+        text="Subdivisions",
+        on_click=lambda k: page.open(subdivs_settings),
+    )
+
+    settings_screen: ft.AlertDialog = ft.AlertDialog(
+        title=ft.Text("Settings"),
+        content=ft.Row([
+                open_interval_button,
+                open_subdivs_button,
+            ], alignment=ft.MainAxisAlignment.SPACE_EVENLY),
         actions=[ft.TextButton("Close", on_click=lambda k: page.close(settings_screen)), color_theme_button]
     )
     
@@ -89,11 +116,6 @@ async def main(page: ft.Page):
         show_info_distribution_1,
         ft.Row([settings_button], alignment=ft.MainAxisAlignment.END, vertical_alignment=ft.CrossAxisAlignment.END)
     ])
-    
-    if page.theme_mode == ft.ThemeMode.DARK:
-        color_theme_button.icon = ft.Icons.DARK_MODE
-    else:
-        color_theme_button.icon = ft.Icons.LIGHT_MODE
         
     if (sub_div < 10):
         sub_div = 10
@@ -104,7 +126,6 @@ async def main(page: ft.Page):
         show_info_distribution_1.width = page.width * 3/10
     else:
         show_info_distribution_1.width = page.width * 1/2
-    
     
     axis.height = page.height - 3
     axis.width = page.width - 3
